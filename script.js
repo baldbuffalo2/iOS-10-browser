@@ -12,6 +12,18 @@ document.getElementById("loadBtn").addEventListener("click", function() {
     new URL(url); // This will throw an error if the URL is invalid
     iframe.src = url;
   } catch (e) {
-    alert("Please enter a valid URL.");
+    showAlert("Please enter a valid URL.");
   }
 });
+
+function showAlert(message) {
+  const alertBox = document.getElementById("alertBox");
+  const alertMessage = document.getElementById("alertMessage");
+  alertMessage.textContent = message;
+  alertBox.style.display = 'block';
+}
+
+function closeAlert() {
+  const alertBox = document.getElementById("alertBox");
+  alertBox.style.display = 'none';
+}
