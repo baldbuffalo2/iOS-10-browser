@@ -1,10 +1,10 @@
 document.getElementById("loadBtn").addEventListener("click", function() {
-  const url = document.getElementById("urlInput").value.trim();
+  let url = document.getElementById("urlInput").value.trim(); // Change const to let
   const iframe = document.getElementById("browserFrame");
 
   // Add 'http://' if the URL doesn't include a scheme
   if (!/^https?:\/\//i.test(url)) {
-    url = 'http://' + url;
+    url = 'http://' + url; // Now you can reassign the value of url
   }
 
   // Validate the URL
