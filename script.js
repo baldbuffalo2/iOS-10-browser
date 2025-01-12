@@ -2,9 +2,9 @@ document.getElementById("loadBtn").addEventListener("click", function() {
   let url = document.getElementById("urlInput").value.trim(); // Use let here
   const iframe = document.getElementById("browserFrame");
 
-  // Add 'http://' if the URL doesn't include a scheme
+  // Add 'https://' if the URL doesn't include a scheme
   if (!/^https?:\/\//i.test(url)) {
-    url = 'http://' + url; // This is fine, since it's let
+    url = 'https://' + url; // Use https by default
   }
 
   // Validate the URL
