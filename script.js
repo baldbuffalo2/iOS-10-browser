@@ -1,10 +1,10 @@
 document.getElementById("loadBtn").addEventListener("click", function() {
-  let url = document.getElementById("urlInput").value.trim(); // Change const to let
+  let url = document.getElementById("urlInput").value.trim(); // Use let instead of const
   const iframe = document.getElementById("browserFrame");
 
   // Add 'http://' if the URL doesn't include a scheme
   if (!/^https?:\/\//i.test(url)) {
-    url = 'http://' + url; // Now you can reassign the value of url
+    url = 'http://' + url; // Reassigning url here is fine since it's let
   }
 
   // Validate the URL
