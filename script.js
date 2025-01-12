@@ -7,17 +7,7 @@ function fixURL(url) {
   return url;
 }
 
-// Function to check if the browser supports WebGL
-function checkWebGL() {
-  try {
-    const canvas = document.createElement('canvas');
-    return !!window.WebGLRenderingContext && canvas.getContext('webgl');
-  } catch (e) {
-    return false;
-  }
-}
-
-// Function to check if the browser supports WebAssembly
+// Function to check WebAssembly support
 function checkWebAssembly() {
   try {
     return typeof WebAssembly === "object" && typeof WebAssembly.instantiate === "function";
@@ -31,7 +21,8 @@ async function fetchWithFallback(url) {
   try {
     const response = await fetch(url, { method: 'GET' });
     if (response.ok) {
-      return await response.text();
+      const text = await response.text();
+      return text; // Return the fetched content
     } else {
       throw new Error("Network error: Unable to load content");
     }
@@ -39,6 +30,22 @@ async function fetchWithFallback(url) {
     console.error("Fetch error:", error);
     return null;
   }
+}
+
+// Service Worker registration (for modern features like caching if available)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+      console.log('Service Worker registered with scope:', registration.scope);
+    }).catch(function(error) {
+      console.log('Service Worker registration failed:', error);
+    });
+  });
+}
+
+// Function to handle iframe load errors
+function handleIframeError() {
+  document.getElementById("errorMessage").innerText = "There was an error loading the page. Please try another website.";
 }
 
 // Add event listener for the Load button
@@ -56,29 +63,25 @@ document.getElementById("loadBtn").addEventListener("click", function() {
   const iframe = document.getElementById("browserFrame");
   document.getElementById("errorMessage").innerText = "Loading...";
 
-  // Check WebGL and WebAssembly support
-  if (!checkWebGL()) {
-    console.log("WebGL is not supported on this device");
-  }
-
-  if (!checkWebAssembly()) {
-    console.log("WebAssembly is not supported on this device");
-  }
-
   // Try loading the URL into the iframe
   iframe.src = url;
 
   // Handle iframe load error
-  iframe.onerror = function() {
-    document.getElementById("errorMessage").innerText = "There was an error loading the page. Please try another website.";
-  };
+  iframe.onerror = handleIframeError;
 
-  // Add onload event without accessing the iframe content directly
+  // Handle successful iframe load
   iframe.onload = function() {
     document.getElementById("errorMessage").innerText = "";
   };
 
-  // Attempt a network fetch as a fallback (for progressive loading)
+  // Check WebAssembly support and log if it's available
+  if (checkWebAssembly()) {
+    console.log("WebAssembly is supported on this device!");
+  } else {
+    console.log("WebAssembly is not supported on this device.");
+  }
+
+  // Attempt a network fetch as a fallback for the site loading (not required but can be added for extra functionality)
   fetchWithFallback(url)
     .then(content => {
       if (!content) {
