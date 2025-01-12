@@ -1,0 +1,30 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #1a73e8;
+  color: white;
+}
+
+#urlInput {
+  width: 80%;
+  padding: 5px;
+}
+
+#loadBtn {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+iframe {
+  border-top: 2px solid #1a73e8;
+}
